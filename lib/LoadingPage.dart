@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lio/Tour.dart';
 import 'package:video_player/video_player.dart';
-
-import 'HomePage.dart';
 
 class LoadingPage extends StatefulWidget {
   @override
@@ -24,7 +23,7 @@ class _LoadingPageState extends State<LoadingPage> {
       if (_videoPlayerController.value.position ==
           _videoPlayerController.value.duration) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+            MaterialPageRoute(builder: (BuildContext context) => Tour()));
       }
     });
     super.initState();

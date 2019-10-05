@@ -3,11 +3,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Tour extends StatelessWidget {
+  void signInWithGoogle() {
+    
+  }
   final PageController pageController = PageController(
     initialPage: 0,
   );
   @override
   Widget build(BuildContext context) {
+    pageController.addListener(() {
+      print("Current page " + pageController.page.toString());
+    });
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -52,12 +58,16 @@ class Tour extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0)),
                       elevation: 0.0,
                       onPressed: () {
-                        pageController.nextPage(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.ease);
+                        if (pageController.page == 1.0) {
+                          signInWithGoogle();
+                        } else {
+                          pageController.nextPage(
+                              duration: Duration(milliseconds: 200),
+                              curve: Curves.ease);
+                        }
                       },
                       child: Text(
-                        'Next',
+                        'Tell Me More',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 20.0,
