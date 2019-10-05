@@ -16,6 +16,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text("Hey There"),
+      ),
+    );
+  }
+}
+
 class LoadingPage extends StatefulWidget {
   @override
   _LoadingPageState createState() => _LoadingPageState();
@@ -26,21 +37,38 @@ class _LoadingPageState extends State<LoadingPage> {
       VideoPlayerController.asset('assets/lio_video.mp4');
 
   @override
+  void initState() {
+    _videoPlayerController.initialize().then((a) {
+      setState(() {
+        _videoPlayerController.play();
+      });
+    });
+    _videoPlayerController.addListener(() {
+      print(_videoPlayerController.value.position);
+      if (_videoPlayerController.value.position ==
+          _videoPlayerController.value.duration) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand,
         alignment: Alignment.center,
         children: <Widget>[
-          // Container(
-          //   decoration: BoxDecoration(
-          //       image: DecorationImage(
-          //           image: AssetImage('assets/lio_loop.gif'),
-          //           fit: BoxFit.cover)),
-          // ),
-          AspectRatio(
-            aspectRatio: _videoPlayerController.value.aspectRatio,
-            child: VideoPlayer(_videoPlayerController),
+          SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: _videoPlayerController.value.size?.width ?? 0,
+                height: _videoPlayerController.value.size?.height ?? 0,
+                child: VideoPlayer(_videoPlayerController),
+              ),
+            ),
           ),
           Positioned(
               bottom: 40,
@@ -56,7 +84,9 @@ class _LoadingPageState extends State<LoadingPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0)),
                       elevation: 0.0,
-                      onPressed: () {},
+                      onPressed: () {
+                        _videoPlayerController.seekTo(Duration(seconds: 0));
+                      },
                       child: Text(
                         'Lets Go',
                         style: TextStyle(
