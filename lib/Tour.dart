@@ -1,16 +1,45 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Tour extends StatelessWidget {
-  void signInWithGoogle() {
-    
-  }
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final PageController pageController = PageController(
     initialPage: 0,
   );
   @override
   Widget build(BuildContext context) {
+    Future<FirebaseUser> _handleSignIn() async {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final AuthResult authResult =
+          await _auth.signInWithCredential(credential);
+      return authResult.user;
+    }
+
+    void _signIn() {
+      _handleSignIn().then((FirebaseUser user) {
+        print(user.displayName);
+        // List<String> _nameSplit = user.displayName.split(' ');
+        // Firestore.instance.document('users/$globalUserId').setData({
+        //   'image': user.photoUrl,
+        //   'name': {'first': _nameSplit[0], 'last': _nameSplit[1]},
+        //   //'mobile': int.parse(mobileNoController.text)
+        // }, merge: true).then((e) {
+        //   Navigator.pop(context);
+        // });
+      }).catchError((e) => print(e));
+    }
+
     pageController.addListener(() {
       print("Current page " + pageController.page.toString());
     });
@@ -59,7 +88,7 @@ class Tour extends StatelessWidget {
                       elevation: 0.0,
                       onPressed: () {
                         if (pageController.page == 1.0) {
-                          signInWithGoogle();
+                          _signIn();
                         } else {
                           pageController.nextPage(
                               duration: Duration(milliseconds: 200),
