@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lio/ChatPage.dart';
@@ -123,7 +124,9 @@ class HomePage extends StatelessWidget {
               Icons.more_vert,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // FirebaseAuth.instance.signOut();
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -162,7 +165,17 @@ class HomePage extends StatelessWidget {
                         Hero(
                           tag: index.toString() + "_background",
                           child: Container(
-                            color: Color.fromRGBO(255, 183, 183, 0.8),
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(255, 183, 183, 0.8),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(255, 183, 183, 0.8)
+                                          .withOpacity(0.5),
+                                      offset: const Offset(5, 5),
+                                      blurRadius: 10.0)
+                                ]),
+
                             // child: Text(snapshot.data.documents[index].data['name']),
                           ),
                         ),

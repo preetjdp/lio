@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               if (isLoggedIn) {
                 globalUserId = snapshot.data.uid;
               }
-              return LoadingPage();
+              return isLoggedIn ? LoadingPage() : LoadingPage();
             } else {
               return Scaffold(
                   body: Container(

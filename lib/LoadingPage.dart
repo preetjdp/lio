@@ -27,7 +27,7 @@ class _LoadingPageState extends State<LoadingPage> {
           _videoPlayerController.value.duration) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) {
-          return Provider.of<FirebaseUser>(context).uid == null
+          return Provider.of<FirebaseUser>(context) == null
               ? Tour()
               : HomePage();
         }));
