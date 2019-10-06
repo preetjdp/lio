@@ -1,15 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatelessWidget {
+  final DocumentSnapshot room_snap;
   final DocumentReference room;
-  ChatPage({this.room});
+  Color backgroundColor;
+  ChatPage(
+      {@required this.room,
+      @required this.room_snap,
+      @required this.backgroundColor});
 
   final _messagecontroller = TextEditingController();
 
-  void _senddata() {
+  void _senddata(BuildContext context) {
     String _message = _messagecontroller.text;
-    String _sender_id = "1234";
+    String _sender_id = Provider.of<FirebaseUser>(context).uid;
     FieldValue _time = FieldValue.serverTimestamp();
     if (_message != "")
       room.collection('chats').add(
@@ -41,6 +48,11 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        title: Text(room_snap.data['name']),
+      ),
       body: Stack(
         children: <Widget>[
           Positioned(
@@ -49,9 +61,9 @@ class ChatPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: Hero(
-              tag: 2.toString() + "_background",
+              tag: room.documentID + "_background",
               child: Container(
-                color: Color.fromRGBO(255, 183, 183, 0.8),
+                color: backgroundColor.withOpacity(0.8),
                 child: StreamBuilder(
                   stream: room
                       .collection('chats')
@@ -75,7 +87,7 @@ class ChatPage extends StatelessWidget {
                               return Row(
                                 mainAxisAlignment: chats.data.documents[index]
                                             .data['sender_id'] ==
-                                        "1234"
+                                        Provider.of<FirebaseUser>(context).uid
                                     ? MainAxisAlignment.end
                                     : MainAxisAlignment.start,
                                 children: <Widget>[
@@ -96,14 +108,18 @@ class ChatPage extends StatelessWidget {
                                                         .data
                                                         .documents[index]
                                                         .data['sender_id'] ==
-                                                    "1234"
+                                                    Provider.of<FirebaseUser>(
+                                                            context)
+                                                        .uid
                                                 ? Radius.circular(15)
                                                 : Radius.circular(0),
                                             bottomRight: chats
                                                         .data
                                                         .documents[index]
                                                         .data['sender_id'] ==
-                                                    "1234"
+                                                    Provider.of<FirebaseUser>(
+                                                            context)
+                                                        .uid
                                                 ? Radius.circular(0)
                                                 : Radius.circular(15))),
                                     child: Text(
@@ -139,7 +155,7 @@ class ChatPage extends StatelessWidget {
                 ),
                 RaisedButton(
                   child: Text("Send"),
-                  onPressed: () => _senddata(),
+                  onPressed: () => _senddata(context),
                 ),
               ],
             ),

@@ -4,13 +4,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Tour extends StatelessWidget {
+class Tour extends StatefulWidget {
+  @override
+  _TourState createState() => _TourState();
+}
+
+class _TourState extends State<Tour> {
+  int currentPage = 0;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final PageController pageController = PageController(
     initialPage: 0,
   );
+
   @override
   Widget build(BuildContext context) {
     Future<FirebaseUser> _handleSignIn() async {
@@ -48,6 +56,11 @@ class Tour extends StatelessWidget {
         alignment: Alignment.center,
         children: <Widget>[
           PageView(
+            onPageChanged: (int page) {
+              setState(() {
+                currentPage = page;
+              });
+            },
             controller: pageController,
             children: <Widget>[
               Stack(
@@ -60,7 +73,7 @@ class Tour extends StatelessWidget {
                             fit: BoxFit.cover)),
                   ),
                   Positioned(
-                    top: 10,
+                    top: 25,
                     right: 10,
                     child: Text(
                       'Everyone\nNeeds\nHelp',
@@ -83,16 +96,16 @@ class Tour extends StatelessWidget {
                             fit: BoxFit.cover)),
                   ),
                   Positioned(
-                    top: 15,
+                    top: 25,
                     right: 10,
                     child: Text(
-                      'We Need It.\nYou Need it.',
+                      'Everybody Needs It.\nDo You Need it?',
                       textAlign: TextAlign.end,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Francois One',
                           // height: 1,
-                          fontSize: 60),
+                          fontSize: 40),
                     ),
                   )
                 ],
@@ -123,7 +136,9 @@ class Tour extends StatelessWidget {
                         }
                       },
                       child: Text(
-                        'Tell Me More',
+                        currentPage == 0
+                            ? 'Tell Me More'
+                            : currentPage == 1? 'Yes I need it' : '',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 20.0,
