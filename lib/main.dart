@@ -22,26 +22,26 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Lio',
-        home: LoadingPage(),
-        // home: StreamBuilder(
-        //   stream: FirebaseAuth.instance.onAuthStateChanged,
-        //   builder:
-        //       (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.active) {
-        //       bool isLoggedIn = snapshot.hasData;
-        //       if (isLoggedIn) {
-        //         globalUserId = snapshot.data.uid;
-        //       }
-        //       return isLoggedIn ? LoadingPage() : LoadingPage();
-        //     } else {
-        //       return Scaffold(
-        //           body: Container(
-        //               child: Center(
-        //                   child: Text(
-        //                       'If you see this screen please restart the app or contact the dev'))));
-        //     }
-        //   },
-        // ),
+        // home: LoadingPage(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder:
+              (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              bool isLoggedIn = snapshot.hasData;
+              if (isLoggedIn) {
+                globalUserId = snapshot.data.uid;
+              }
+              return isLoggedIn ? LoadingPage() : LoadingPage();
+            } else {
+              return Scaffold(
+                  body: Container(
+                      child: Center(
+                          child: Text(
+                              'If you see this screen please restart the app or contact the dev'))));
+            }
+          },
+        ),
       ),
     );
   }
