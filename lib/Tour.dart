@@ -51,6 +51,7 @@ class Tour extends StatelessWidget {
             controller: pageController,
             children: <Widget>[
               Stack(
+                // alignment: Alignment.center,
                 children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
@@ -58,6 +59,19 @@ class Tour extends StatelessWidget {
                             image: AssetImage('assets/woman_sad.jpg'),
                             fit: BoxFit.cover)),
                   ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Text(
+                      'Everyone\nNeeds\nHelp',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Francois One',
+                          // height: 1,
+                          fontSize: 60),
+                    ),
+                  )
                 ],
               ),
               Stack(
@@ -68,6 +82,19 @@ class Tour extends StatelessWidget {
                             image: AssetImage('assets/see-saw-loop.gif'),
                             fit: BoxFit.cover)),
                   ),
+                  Positioned(
+                    top: 15,
+                    right: 10,
+                    child: Text(
+                      'We Need It.\nYou Need it.',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Francois One',
+                          // height: 1,
+                          fontSize: 60),
+                    ),
+                  )
                 ],
               ),
             ],

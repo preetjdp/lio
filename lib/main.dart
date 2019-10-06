@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lio/HomePage.dart';
 import 'package:lio/LoadingPage.dart';
-import 'HomePage.dart';
 import 'Tour.dart';
 
 void main() => runApp(MyApp());
@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Lio',
+      // home: LoadingPage(),
       home: HomePage(),
     );
   }
