@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'encryption.dart';
 
 class ChatPage extends StatelessWidget {
+  Encryption e = Encryption();
   final DocumentSnapshot room_snap;
   final DocumentReference room;
   Color backgroundColor;
@@ -18,13 +20,15 @@ class ChatPage extends StatelessWidget {
     String _message = _messagecontroller.text;
     String _sender_id = Provider.of<FirebaseUser>(context).uid;
     FieldValue _time = FieldValue.serverTimestamp();
+    _message = e.encrypt(_message);
     if (_message != "")
       room.collection('chats').add(
           {'message': _message, 'sender_id': _sender_id, 'created': _time});
   }
 
   String clean(String data) {
-    List<String> stopwordrs = ['bad'];
+    data = e.decrypt(data);
+    List<String> stopwordrs = ['bc','mc','benchod','mardarchod','chutia','fuck','fucking','fuck off','dick','porn','bsdk','pusy'];;
     String fdata = "";
     for (var w in data.split(' ')) {
       if (stopwordrs.contains(w)) {
@@ -118,7 +122,7 @@ class ChatPage extends StatelessWidget {
                                               ? Radius.circular(0)
                                               : Radius.circular(15))),
                                   child: Text(
-                                    chats.data.documents[index].data['message'],
+                                    e.decrypt(chats.data.documents[index].data['message']),
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
