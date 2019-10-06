@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lio/HomePage.dart';
 import 'package:lio/Tour.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -23,7 +26,11 @@ class _LoadingPageState extends State<LoadingPage> {
       if (_videoPlayerController.value.position ==
           _videoPlayerController.value.duration) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => Tour()));
+            MaterialPageRoute(builder: (BuildContext context) {
+          return Provider.of<FirebaseUser>(context).uid == null
+              ? Tour()
+              : HomePage();
+        }));
       }
     });
     super.initState();
