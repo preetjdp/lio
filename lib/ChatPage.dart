@@ -77,60 +77,53 @@ class ChatPage extends StatelessWidget {
                     } else {
                       return Container(
                         child: ListView.builder(
-                          itemCount: chats.data.documents.length + 1,
+                          itemCount: chats.data.documents.length,
                           itemBuilder: (_, index) {
-                            if (index < chats.data.documents.length) {
-                              // return ListTile(
-                              //   title: Text(clean(
-                              //        )),
-                              // );
-                              return Row(
-                                mainAxisAlignment: chats.data.documents[index]
-                                            .data['sender_id'] ==
-                                        Provider.of<FirebaseUser>(context).uid
-                                    ? MainAxisAlignment.end
-                                    : MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    // alignment:  Alignment.bottomRight
-                                    //     : Alignment.bottomLeft,
-                                    margin: EdgeInsets.all(8),
-                                    // width: 230,
-                                    // height: 230,
-                                    constraints: BoxConstraints(maxWidth: 230),
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.5),
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(15),
-                                            topLeft: Radius.circular(15),
-                                            bottomLeft: chats
-                                                        .data
-                                                        .documents[index]
-                                                        .data['sender_id'] ==
-                                                    Provider.of<FirebaseUser>(
-                                                            context)
-                                                        .uid
-                                                ? Radius.circular(15)
-                                                : Radius.circular(0),
-                                            bottomRight: chats
-                                                        .data
-                                                        .documents[index]
-                                                        .data['sender_id'] ==
-                                                    Provider.of<FirebaseUser>(
-                                                            context)
-                                                        .uid
-                                                ? Radius.circular(0)
-                                                : Radius.circular(15))),
-                                    child: Text(
-                                      chats.data.documents[index]
-                                          .data['message'],
-                                      style: TextStyle(fontSize: 20),
-                                    ),
+                            return Row(
+                              mainAxisAlignment: chats.data.documents[index]
+                                          .data['sender_id'] ==
+                                      Provider.of<FirebaseUser>(context).uid
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  // alignment:  Alignment.bottomRight
+                                  //     : Alignment.bottomLeft,
+                                  margin: EdgeInsets.all(8),
+                                  // width: 230,
+                                  // height: 230,
+                                  constraints: BoxConstraints(maxWidth: 230),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.5),
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(15),
+                                          topLeft: Radius.circular(15),
+                                          bottomLeft: chats
+                                                      .data
+                                                      .documents[index]
+                                                      .data['sender_id'] ==
+                                                  Provider.of<FirebaseUser>(
+                                                          context)
+                                                      .uid
+                                              ? Radius.circular(15)
+                                              : Radius.circular(0),
+                                          bottomRight: chats
+                                                      .data
+                                                      .documents[index]
+                                                      .data['sender_id'] ==
+                                                  Provider.of<FirebaseUser>(
+                                                          context)
+                                                      .uid
+                                              ? Radius.circular(0)
+                                              : Radius.circular(15))),
+                                  child: Text(
+                                    chats.data.documents[index].data['message'],
+                                    style: TextStyle(fontSize: 20),
                                   ),
-                                ],
-                              );
-                            }
+                                ),
+                              ],
+                            );
                           },
                         ),
                       );
@@ -143,20 +136,31 @@ class ChatPage extends StatelessWidget {
           Positioned(
             bottom: 0,
             child: Row(
+              // mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Container(
-                  width: 300.0,
+                  color: backgroundColor.withAlpha(120),
+                  width: MediaQuery.of(context).size.width - 48,
                   child: TextField(
                     controller: _messagecontroller,
                     decoration: InputDecoration(
-                      hintText: "Enter data to send",
-                    ),
+                        hintText: "Enter data to send",
+                        hintStyle: TextStyle(
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic,
+                        )),
                   ),
                 ),
-                RaisedButton(
-                  child: Text("Send"),
-                  onPressed: () => _senddata(context),
-                ),
+                Container(
+                  color: backgroundColor.withAlpha(120),
+                  child: IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      _senddata(context);
+                      _messagecontroller.clear();
+                    },
+                  ),
+                )
               ],
             ),
           )

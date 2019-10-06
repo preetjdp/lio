@@ -22,7 +22,7 @@ class _LoadingPageState extends State<LoadingPage> {
       });
     });
     _videoPlayerController.addListener(() {
-      print(_videoPlayerController.value.position);
+      // print(_videoPlayerController.value.position);
       if (_videoPlayerController.value.position ==
           _videoPlayerController.value.duration) {
         Navigator.pushReplacement(context,
